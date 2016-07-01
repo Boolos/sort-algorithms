@@ -22,7 +22,8 @@ Data data[THREADS];
 
 int compare(const void *a, const void *b)
 {
-	return (*(int *)a - *(int *)b);
+	int x = *(int *)a, y = *(int *)b;
+	return x > y ? 1 : (x < y ? -1 : 0);
 }
 
 void reverse(int *array, int n)
@@ -135,6 +136,8 @@ int main()
 			success = false;
 	cout << (success ? "sort succeeded!" : "sort failed!") << endl;
 #endif
+	
+	delete[] array;
 	
 	return 0;
 }
