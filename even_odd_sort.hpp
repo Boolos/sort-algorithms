@@ -12,7 +12,7 @@
 class even_odd_sort : public sortable {
 public:
 	even_odd_sort(int _nthreads);
-	
+	std::string name() const;
 	void sort_array(int array[], int n);
 	
 private:

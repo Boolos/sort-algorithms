@@ -1,7 +1,11 @@
 #include "even_odd_sort.hpp"
 
 even_odd_sort::even_odd_sort(int _nthreads) : sortable(_nthreads) { }
-	
+
+std::string even_odd_sort::name() const {
+	return "Even odd sort";
+}
+
 void even_odd_sort::sort_array(int array[], int n){
 	std::pair<int, int>* indices = new std::pair<int, int>[nthreads];
 	std::thread* threads = new std::thread[nthreads]; //4 threads

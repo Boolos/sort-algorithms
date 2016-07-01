@@ -1,17 +1,12 @@
 #include <iostream>
-#include <algorithm>
-#include <random>
-#include <chrono>
-#include <sstream>
-#include <fstream>
-#include <thread>
-#include <mutex>
 #include <unistd.h>
 
 #include "utility.hpp"
 #include "sortable.hpp"
 #include "sequential_quicksort_sort.hpp"
 #include "even_odd_sort.hpp"
+#include "radix_sort.hpp"
+#include "bitonic_sort.hpp"
 
 int main(int argc, char * argv[]) {
 	int n = 48000000;
@@ -92,33 +87,40 @@ int main(int argc, char * argv[]) {
 	//third - pick a sortable implementation.
 	//
 	
-	sortable* s = new even_odd_sort(thread_count);
-	//sortable* s = new sequential_quicksort_sort(thread_count);
+	std::vector<sortable*> sorts;
+	sorts.push_back(new sequential_quicksort_sort(thread_count));
+	sorts.push_back(new even_odd_sort(thread_count));
+	sorts.push_back(new radix_sort(thread_count));
+	sorts.push_back(new bitonic_sort(thread_count));
 	
-
-	
-	//
-	//fourth - perform the sorting of the array
-	//
-	
-	std::cout << "Sorting array ... " << std::flush;
-	//TODO: fix this to where it will be able to invoke the sort_array method from a sortable instance
-	//duration = duration_function(&sort_array, values, n);
-	
-	std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
-	s->sort_array(values, n);
-	std::chrono::high_resolution_clock::time_point stop_time = std::chrono::high_resolution_clock::now();
-	duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop_time - start_time).count();
-
-	std::cout << "done in " << utility::duration_string(duration) << std::endl;
-	std::cout << std::endl;
-	
-	
-
-	std::cout << "Validating sort results ... " << std::flush;
-	bool correct = utility::is_sorted(values, n);
-	std::cout << (correct ? "correct" : "INCORRECT") << std::endl;
-	
+	for(std::size_t x=0; x<sorts.size(); x++){
+		int* values_copy = new int[n];
+		std::copy(values, values + n, values_copy);
+		
+		std::cout << "-------------------------------------------" << std::endl;
+		std::cout << "Testing sort implementation (" << sorts[x]->name() << ")" << std::endl;
+		std::cout << std::endl;
+		
+		std::cout << "Sorting array ... " << std::flush;
+		//TODO: fix this to where it will be able to invoke the sort_array method from a sortable instance
+		//duration = duration_function(&sort_array, values, n);
+		
+		std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
+		sorts[x]->sort_array(values, n);
+		std::chrono::high_resolution_clock::time_point stop_time = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop_time - start_time).count();
+		
+		std::cout << "done in " << utility::duration_string(duration) << std::endl;
+		std::cout << std::endl;
+		
+		std::cout << "Validating sort results ... " << std::flush;
+		bool correct = utility::is_sorted(values, n);
+		std::cout << (correct ? "correct" : "INCORRECT") << std::endl;
+		std::cout << "--------------------------------------------" << std::endl << std::endl;
+		
+		std::copy(values_copy, values_copy + n, values);
+		delete[] values_copy;
+	}
 	
 	delete[] values;
 }
