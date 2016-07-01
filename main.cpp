@@ -8,7 +8,10 @@
 #include <mutex>
 #include <unistd.h>
 
+#include "utility.hpp"
 #include "sortable.hpp"
+#include "sequential_quicksort_sort.hpp"
+#include "even_odd_sort.hpp"
 
 int main(int argc, char * argv[]) {
 	int n = 48000000;
@@ -89,8 +92,8 @@ int main(int argc, char * argv[]) {
 	//third - pick a sortable implementation.
 	//
 	
-	//sortable* s = new even_odd_sort(thread_count);
-	sortable* s = new sequential_quicksort_sort(thread_count);
+	sortable* s = new even_odd_sort(thread_count);
+	//sortable* s = new sequential_quicksort_sort(thread_count);
 	
 
 	
