@@ -1,18 +1,19 @@
 #include <iostream>
 #include <unistd.h>
+#include <chrono>
 
 #include "utility.hpp"
 #include "sortable.hpp"
 #include "sequential_quicksort_sort.hpp"
 #include "even_odd_sort.hpp"
-#include "radix_sort.hpp"
+#include "bucket_sort.hpp"
 #include "bitonic_sort.hpp"
 
 int main(int argc, char * argv[]) {
-	int n = 48000000;
-	int thread_count = 4;
-	std::string input_file_path;
-	std::string output_file_path;
+	int n = 32000000; //the default number of elements in the array to sort. This can be changed by specifying the -n runtime argument.
+	int thread_count = 4; //the default number of threads. This can be changed by the -t runtime argument.
+	std::string input_file_path; //where to load data from, if anywhere. If this is not specified, the data will be generated at runtime.
+	std::string output_file_path; //where to write out the generated data, if anywhere.
 	long long int duration = 0;
 	bool debug = false;
 	
@@ -53,7 +54,7 @@ int main(int argc, char * argv[]) {
 	}
 	
 	
-	int* values = new int[n];
+	int* values = new int[n]; //the array to populate and sort
 	
 	//
 	//first - load the values into the array, either by populating it
@@ -84,13 +85,13 @@ int main(int argc, char * argv[]) {
 	
 	
 	//
-	//third - pick a sortable implementation.
+	//third - run all sortable implementations.
 	//
 	
 	std::vector<sortable*> sorts;
 	sorts.push_back(new sequential_quicksort_sort(thread_count));
 	sorts.push_back(new even_odd_sort(thread_count));
-	sorts.push_back(new radix_sort(thread_count));
+	sorts.push_back(new bucket_sort(thread_count));
 	sorts.push_back(new bitonic_sort(thread_count));
 	
 	for(std::size_t x=0; x<sorts.size(); x++){
@@ -116,7 +117,7 @@ int main(int argc, char * argv[]) {
 		std::cout << "Validating sort results ... " << std::flush;
 		bool correct = utility::is_sorted(values, n);
 		std::cout << (correct ? "correct" : "INCORRECT") << std::endl;
-		std::cout << "--------------------------------------------" << std::endl << std::endl;
+		std::cout << "-------------------------------------------" << std::endl << std::endl;
 		
 		std::copy(values_copy, values_copy + n, values);
 		delete[] values_copy;
