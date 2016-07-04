@@ -9,6 +9,7 @@
 #include <thread>
 #include <mutex>
 #include <cmath>
+#include <math.h>
 #include <stdlib.h>
 #include "sortable.hpp"
 

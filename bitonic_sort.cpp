@@ -1,45 +1,30 @@
 #include "bitonic_sort.hpp"
-#include <climits>
-#include <cstdlib>
-#include <iostream>
-#include <omp.h>
-using namespace std;
 
-struct Data
-{
-	int *array;
-	int n, actualN;
-	Data(int *array = NULL, int n = 0, int actualN = 0) : array(array), n(n), actualN(actualN) {}
-	int operator[](size_t i) { if(i >= actualN) return INT_MAX; else return array[i]; }
-};
-Data *data;
-int THREADS;
-
-int compare(const void *a, const void *b)
+int bitonic_sort::compare(const void *a, const void *b)
 {
 	int x = *(int *)a, y = *(int *)b;
 	return x > y ? 1 : (x < y ? -1 : 0);
 }
 
-void reverse(int *array, int n)
+void bitonic_sort::reverse(int *array, int n)
 {
 	if(n <= 1)
 		return;
 
 	for(int i = 0; i < n/2; i++)
-		swap(array[i], array[n - 1 - i]);
+		std::swap(array[i], array[n - 1 - i]);
 }
 
-void runThread(size_t id)
+void bitonic_sort::runThread(size_t id)
 {
 	Data &p = data[id];
-	qsort(p.array, p.n, sizeof(int), compare);
+	qsort(p.array, p.n, sizeof(int), &bitonic_sort::compare);
 	
 	for(int iBit = 1; iBit <= THREADS / 2; iBit *= 2)
 	{
 		bool outputUp = (id / (iBit * 2)) % 2 == 0;
-		size_t pid;
-		bool up;
+		std::size_t pid;
+		bool up = false;
 		
 		for(int iMerge = iBit; iMerge >= 1; iMerge /= 2)
 		{
@@ -87,7 +72,7 @@ void runThread(size_t id)
 		}
 		
 		if(!up)
-			reverse(p.array, p.n);
+			this->reverse(p.array, p.n);
 	}
 }
 
@@ -95,8 +80,8 @@ bitonic_sort::bitonic_sort(int _nthreads) : sortable(_nthreads)
 {
 	if(nthreads == 0 || nthreads & (nthreads - 1))
 	{
-		cerr << "cannot use bitonic sort with a number of processors not equal to a power of two" << endl;
-		exit(1);
+		std::cerr << "cannot use bitonic sort with a number of processors not equal to a power of two" << std::endl;
+		std::exit(1);
 	}
 }
 
@@ -117,11 +102,11 @@ void bitonic_sort::sort_array(int _array[], int _n)
 	
 	#pragma omp parallel num_threads(THREADS)
 	{
-		size_t i = omp_get_thread_num();
+		std::size_t i = omp_get_thread_num();
 		
 		data[i].array	= _array + i * n;
 		data[i].n		= n;
-		data[i].actualN	= N - (i * n);
+		data[i].actualN	= static_cast<int>(N - (i * n));
 		
 		runThread(i);
 	}

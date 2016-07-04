@@ -27,7 +27,7 @@ void bucket_sort::limits_thread(int array[], int start, int stop){
 void bucket_sort::determine_bucket_ranges(){
 	long long int min = this->limits.first;
 	long long int max = this->limits.second;
-	long long int count = static_cast<long long int>(std::ceill(static_cast<long double>(max - min + 1) / static_cast<long double>(this->nbuckets)));
+	long long int count = static_cast<long long int>(ceil(static_cast<double>(max - min + 1) / static_cast<double>(this->nbuckets)));
 	
 	this->bucket_limits.clear();
 	for(long long int start=min, stop=min + count; start <= max; start += count, stop += count){
@@ -93,7 +93,7 @@ void bucket_sort::sort_array(int array[], int n){
 	
 	//find the minimum and maximum values in the array
 	this->limits = {std::numeric_limits<int>::max(), std::numeric_limits<int>::min()};
-	int nelements = static_cast<int>(std::ceill(static_cast<long double>(n) / static_cast<long double>(nthreads)));
+	int nelements = static_cast<int>(ceil(static_cast<double>(n) / static_cast<double>(nthreads)));
 	for(int x=0, start = 0, stop = nelements; x<this->nthreads && start < n; x++, start += nelements, stop += nelements){
 		ranges.push_back(std::make_pair(start, std::min(stop, n)));
 		threads.push_back(std::thread(&bucket_sort::limits_thread, this, array, start, stop));
