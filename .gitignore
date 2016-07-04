@@ -22,8 +22,12 @@
 *.la
 *.a
 *.lib
+*.depend
 
 # Executables
 *.exe
 *.out
 *.app
+
+# IDE relate files
+.vscode/

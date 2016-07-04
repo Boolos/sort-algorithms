@@ -1,5 +1,16 @@
-# sort-algorithms
-
-Implementations of various parallel sorting algorithms in OpenMP. Included so far are:
-
+# Parallel Sort Algorithm Analysis
+##Implementations of various parallel sorting algorithms in OpenMP. Included so far are:
 * [Batcher's Bitonic Sort](https://en.wikipedia.org/wiki/Bitonic_sorter)
+* Bucket Sort
+* Even Odd Sort
+* Insertion Sort
+* Sequential Quick Sort
+* Shell Sort
+
+# Steps to build/run locally on a Mac
+- install [homebrew](http://brew.sh/)
+- open a terminal
+- brew reinstall gcc --without-multilib **(NOTE: This will take a loooong time, around 30 minutes)**
+- navigagte to the project directory
+- type `make` to build
+- type `./app.out` to run the program
