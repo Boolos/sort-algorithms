@@ -8,6 +8,7 @@
 #include "even_odd_sort.hpp"
 #include "bucket_sort.hpp"
 #include "bitonic_sort.hpp"
+#include "insertion_sort.hpp"
 
 int main(int argc, char * argv[]) {
 	int n = 32000000; //the default number of elements in the array to sort. This can be changed by specifying the -n runtime argument.
@@ -93,6 +94,9 @@ int main(int argc, char * argv[]) {
 	sorts.push_back(new even_odd_sort(thread_count));
 	sorts.push_back(new bucket_sort(thread_count));
 	sorts.push_back(new bitonic_sort(thread_count));
+
+    // Only include sequential insertion sort for small data sets
+    // sorts.push_back(new insertion_sort(thread_count));
 	
 	for(std::size_t x=0; x<sorts.size(); x++){
 		int* values_copy = new int[n];
