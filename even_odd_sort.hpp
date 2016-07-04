@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <math.h>
 #include <thread>
 #include <mutex>
 #include "sortable.hpp"

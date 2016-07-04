@@ -9,7 +9,7 @@ std::string even_odd_sort::name() const {
 void even_odd_sort::sort_array(int array[], int n){
 	std::pair<int, int>* indices = new std::pair<int, int>[nthreads];
 	std::thread* threads = new std::thread[nthreads]; //4 threads
-	int nelements = static_cast<int>(std::ceill(static_cast<long double>(n) / static_cast<long double>(nthreads)));  // ceil(7 / 4) = 2
+	int nelements = static_cast<int>(ceil(static_cast<double>(n) / static_cast<double>(nthreads)));  // ceil(7 / 4) = 2
 	int start = 0, stop = nelements;
 	int segment_count = 0;
 	
