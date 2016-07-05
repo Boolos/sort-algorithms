@@ -55,7 +55,7 @@ int utility::validate(int array[], int n, std::vector<std::string>& output_error
 		if(array[x-1] > array[x]){
 			if(error_count < 10){
 				std::stringstream error;
-				error << "validate: array[" << (x-1) << "] = " << array[x-1] << " is not less than or equal to array[" << x << "] = " << array[x] << std::endl;
+				error << "validate: array[" << (x-1) << "] = " << array[x-1] << " is not less than or equal to array[" << x << "] = " << array[x];
 				output_errors.push_back(error.str());
 			}
 			error_count++;
