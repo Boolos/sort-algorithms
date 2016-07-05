@@ -86,6 +86,16 @@ int main(int argc, char * argv[]) {
 	}
 	
 	
+	//if running in debug mode, print the values of the array
+	if(debug){
+		std::cout << "Running in debug mode ... printing array" << std::endl;
+		std::cout << "-------" << std::endl;
+		utility::print_array(values, n);
+		std::cout << "-------" << std::endl;
+		std::cout << "done printing array" << std::endl << std::endl;
+	}
+	
+	
 	//
 	//third - run all sortable implementations.
 	//
