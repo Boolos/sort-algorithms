@@ -27,7 +27,7 @@ namespace utility {
 	
 	void print_array(int array[], int n);
 	
-	bool is_sorted(int array[], int n);
+	int validate(int array[], int n, std::vector<std::string>& output_errors);
 };
 
 #endif /* utility_hpp */

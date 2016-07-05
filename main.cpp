@@ -97,8 +97,8 @@ int main(int argc, char * argv[]) {
 	sorts.push_back(new bitonic_sort(thread_count));
 	sorts.push_back(new shell_sort(thread_count));
 
-    // Only include sequential insertion sort for small data sets
-    // sorts.push_back(new insertion_sort(thread_count));
+	// Only include sequential insertion sort for small data sets
+	// sorts.push_back(new insertion_sort(thread_count));
 	
 	for(std::size_t x=0; x<sorts.size(); x++){
 		int* values_copy = new int[n];
@@ -109,8 +109,6 @@ int main(int argc, char * argv[]) {
 		std::cout << std::endl;
 		
 		std::cout << "Sorting array ... " << std::flush;
-		//TODO: fix this to where it will be able to invoke the sort_array method from a sortable instance
-		//duration = duration_function(&sort_array, values, n);
 		
 		std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
 		sorts[x]->sort_array(values, n);
@@ -121,8 +119,19 @@ int main(int argc, char * argv[]) {
 		std::cout << std::endl;
 		
 		std::cout << "Validating sort results ... " << std::flush;
-		bool correct = utility::is_sorted(values, n);
-		std::cout << (correct ? "correct" : "INCORRECT") << std::endl;
+		std::vector<std::string> error_messages;
+		int error_count = utility::validate(values, n, error_messages);
+		std::cout << ((error_count == 0) ? "correct" : "INCORRECT") << std::endl;
+		if(error_count > 0){
+			std::cout << "There were " << error_count << " errors.";
+			if(error_count > error_messages.size()){
+				std::cout << " Displaying only the first " << error_messages.size() << " errors.";
+			}
+			std::cout << std::endl;
+			for(std::string& message : error_messages){
+				std::cout << "Error: " << message << std::endl;
+			}
+		}
 		std::cout << "-------------------------------------------" << std::endl << std::endl;
 		
 		std::copy(values_copy, values_copy + n, values);

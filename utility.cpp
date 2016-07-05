@@ -49,11 +49,17 @@ void utility::print_array(int array[], int n){
 	}
 }
 	
-bool utility::is_sorted(int array[], int n){
+int utility::validate(int array[], int n, std::vector<std::string>& output_errors){
+	int error_count = 0;
 	for(int x=1; x<n; x++){
 		if(array[x-1] > array[x]){
-			return false;
+			if(error_count < 10){
+				std::stringstream error;
+				error << "validate: array[" << (x-1) << "] = " << array[x-1] << " is not less than or equal to array[" << x << "] = " << array[x] << std::endl;
+				output_errors.push_back(error.str());
+			}
+			error_count++;
 		}
 	}
-	return true;
+	return error_count;
 }
