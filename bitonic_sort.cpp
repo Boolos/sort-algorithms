@@ -98,18 +98,27 @@ void bitonic_sort::sort_array(int _array[], int _n)
 	int paddedN	= THREADS * (N / THREADS + 1);
 	int n		= paddedN / THREADS;
 	
+	int *array = new int[paddedN];
+	for(int i = 0; i < _n; i++)
+		array[i] = _array[i];
+	for(int i = _n; i < paddedN; i++)
+		array[i] = INT_MAX;
+	
 	data = new Data[THREADS];
 	
 	#pragma omp parallel num_threads(THREADS)
 	{
 		std::size_t i = omp_get_thread_num();
 		
-		data[i].array	= _array + i * n;
+		data[i].array	= array + i * n;
 		data[i].n		= n;
-		data[i].actualN	= static_cast<int>(N - (i * n));
 		
 		runThread(i);
 	}
 	
+	for(int i = 0; i < _n; i++)
+		_array[i] = array[i];
+	
+	delete[] array;
 	delete[] data;
 }
