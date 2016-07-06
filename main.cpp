@@ -110,8 +110,8 @@ int main(int argc, char * argv[]) {
 	// Only include sequential insertion sort for small data sets
 	// sorts.push_back(new insertion_sort(thread_count));
 	
+	int* values_copy = new int[n];
 	for(std::size_t x=0; x<sorts.size(); x++){
-		int* values_copy = new int[n];
 		std::copy(values, values + n, values_copy);
 		
 		std::cout << "-------------------------------------------" << std::endl;
@@ -121,7 +121,7 @@ int main(int argc, char * argv[]) {
 		std::cout << "Sorting array ... " << std::flush;
 		
 		std::chrono::high_resolution_clock::time_point start_time = std::chrono::high_resolution_clock::now();
-		sorts[x]->sort_array(values, n);
+		sorts[x]->sort_array(values_copy, n);
 		std::chrono::high_resolution_clock::time_point stop_time = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::nanoseconds>(stop_time - start_time).count();
 		
@@ -130,7 +130,7 @@ int main(int argc, char * argv[]) {
 		
 		std::cout << "Validating sort results ... " << std::flush;
 		std::vector<std::string> error_messages;
-		int error_count = utility::validate(values, n, error_messages);
+		int error_count = utility::validate(values_copy, n, error_messages);
 		std::cout << ((error_count == 0) ? "correct" : "INCORRECT") << std::endl;
 		if(error_count > 0){
 			std::cout << "There were " << error_count << " errors.";
@@ -143,10 +143,8 @@ int main(int argc, char * argv[]) {
 			}
 		}
 		std::cout << "-------------------------------------------" << std::endl << std::endl;
-		
-		std::copy(values_copy, values_copy + n, values);
-		delete[] values_copy;
 	}
 	
+	delete[] values_copy;
 	delete[] values;
 }
