@@ -105,7 +105,7 @@ int main(int argc, char * argv[]) {
 	sorts.push_back(new even_odd_sort(thread_count));
 	sorts.push_back(new bucket_sort(thread_count));
 	sorts.push_back(new bitonic_sort(thread_count));
-	sorts.push_back(new shell_sort(thread_count));
+	sorts.push_back(new shell_sort(thread_count, new insertion_sort(thread_count)));
 
 	// Only include sequential insertion sort for small data sets
 	// sorts.push_back(new insertion_sort(thread_count));

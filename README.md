@@ -15,7 +15,7 @@ Implementations of various parallel sorting algorithms in OpenMP.
 
 * install [homebrew](http://brew.sh/)
 * open a terminal
-* brew reinstall gcc --without-multilib **(NOTE: This will take a loooong time, around 30 minutes)**
+* `brew reinstall gcc --without-multilib` **(NOTE: This will take a loooong time, around 30 minutes)**
 * navigate to the project directory
 * type `make` to build
 * type `./app.out` to run the program
