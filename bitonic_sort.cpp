@@ -95,14 +95,19 @@ void bitonic_sort::sort_array(int _array[], int _n)
 	THREADS = nthreads;
 	const int N = _n;
 	
-	int paddedN	= THREADS * (N / THREADS + 1);
+	int paddedN	= N % THREADS == 0 ? N : THREADS * (N / THREADS + 1);
 	int n		= paddedN / THREADS;
 	
-	int *array = new int[paddedN];
-	for(int i = 0; i < _n; i++)
-		array[i] = _array[i];
-	for(int i = _n; i < paddedN; i++)
-		array[i] = INT_MAX;
+	int *array 	= _array;
+	if(paddedN != N)
+	{
+		std::cout << "\nWarning: n is not divisible by nthreads; bitonic sort will be slower!" << std::endl;
+		array = new int[paddedN];
+		for(int i = 0; i < _n; i++)
+			array[i] = _array[i];
+		for(int i = _n; i < paddedN; i++)
+			array[i] = INT_MAX;
+	}
 	
 	data = new Data[THREADS];
 	
@@ -116,9 +121,12 @@ void bitonic_sort::sort_array(int _array[], int _n)
 		runThread(i);
 	}
 	
-	for(int i = 0; i < _n; i++)
-		_array[i] = array[i];
+	if(paddedN != N)
+	{
+		for(int i = 0; i < _n; i++)
+			_array[i] = array[i];
+		delete[] array;
+	}
 	
-	delete[] array;
 	delete[] data;
 }
