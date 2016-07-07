@@ -10,27 +10,43 @@ string shell_sort::name() const {
 }
 
 void shell_sort::sort_array(int array[], int n) {
-    int gap_sequence [] = { 701, 301, 132, 57, 23, 10, 4, 1 };
+    std::vector<int> gap_sequence = { 100000, 10000, 701, 301, 132, 57, 23, 10, 4, 1 };
+    sort(array, n, gap_sequence);
+}
 
-    for (int i = 0; i < 8; i++) {
+void shell_sort::sort(int array[], int array_size, std::vector<int> gap_sequence) {
+    for (int i = 0; i < gap_sequence.size(); i++) {
         int gap = gap_sequence[i];
+        sort_gap_in_parallel(array, array_size, gap);
+    }
+}
 
-        #pragma omp parallel num_threads(_nthreads)
-        {
-            #pragma omp for
-            for (int j = 0; j < gap; j++) {
-                int size = (j == 0 && (n - 1) % gap == 0) ? n / gap + 1 : n / gap;
-                int partition [size];
-                int count = 0;
-                for (int k = 0 + j; k < n; k += gap) {
-                    partition[count++] = array[k];
-                }
-                _sequential_sort->sort_array(partition, size);
-                count = 0;
-                for (int k = 0 + j; k < n; k += gap) {
-                    array[k] = partition[count++];
-                }
-            }
+void shell_sort::sort_gap_in_parallel(int array[], int array_size, int gap) {
+    #pragma omp parallel num_threads(_nthreads)
+    {
+        #pragma omp for
+        for (int j = 0; j < gap; j++) {
+            std::vector<int> partition = make_partition(&array[j], array_size - j, gap);
+            _sequential_sort->sort_array(&partition[0], partition.size());
+            write_to_array(partition, &array[j], array_size - j, gap);
         }
     }
+}
+
+void shell_sort::write_to_array(std::vector<int> partition, int array[], int array_size, int gap) {
+    int count = 0;
+    for (int k = 0; k < array_size; k += gap) {
+        array[k] = partition[count++];
+    }
+}
+
+std::vector<int> shell_sort::make_partition(int array[], int array_size, int gap) {
+    std::vector<int> partition;
+
+    int count = 0; 
+    for (int i = 0; i < array_size; i += gap) {
+        partition.push_back(array[i]);
+    }
+
+    return partition;
 }
