@@ -43,36 +43,6 @@ void even_odd_sort_open_mp::sort_array(int array[], int n){
             }
         }
 	}
-    
-    /*
-	
-	//sort elements in each segment
-	for(int x=0; x<nthreads && start < n; x++, start += nelements, stop += nelements){
-		indices[x] = std::make_pair(start, std::min(stop, n));
-		threads[x] = std::thread(&even_odd_sort_open_mp::sort_thread, this, array, indices[x].first, indices[x].second);
-		segment_count++;
-	}
-	for(int x=0; x<segment_count; x++) {
-		threads[x].join();
-	}
-	
-	if(segment_count < 2){
-		//no need to do an even-odd merge if there are not at least two segments to merge
-		return;
-	}
-	
-	//now do even-odd merge
-	for(int start_index = 0, y=0; y<nthreads; start_index = (start_index + 1) % 2, y++){
-		int thread_count = 0;
-		for(int x=start_index, max = std::min(nthreads, segment_count) - 1; x < max; x+=2){
-			thread_count++;
-			threads[x>>1] = std::thread(&even_odd_sort_open_mp::merge_thread, this, array, indices[x].first, indices[x].second, indices[x+1].second);
-		}
-		for(int x=0; x<thread_count; x++){
-			threads[x].join();
-		}
-	}
-    */
 	
 	delete[] threads;
 	delete[] indices;
