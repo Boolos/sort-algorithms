@@ -6,6 +6,7 @@
 #include "sortable.hpp"
 #include "sequential_quicksort_sort.hpp"
 #include "even_odd_sort.hpp"
+#include "even_odd_sort_open_mp.hpp"
 #include "bucket_sort.hpp"
 #include "bitonic_sort.hpp"
 #include "insertion_sort.hpp"
@@ -21,6 +22,7 @@ namespace csce {
 		std::vector<sortable*> sorts;
 		sorts.push_back(new sequential_quicksort_sort(thread_count));
 		sorts.push_back(new even_odd_sort(thread_count));
+		sorts.push_back(new even_odd_sort_open_mp(thread_count));
 		sorts.push_back(new bucket_sort(thread_count));
 		sorts.push_back(new bitonic_sort(thread_count));
 		sorts.push_back(new shell_sort(thread_count, new insertion_sort(thread_count)));
