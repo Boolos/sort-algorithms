@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <cmath>
 #include <math.h>
-#include <thread>
-#include <mutex>
 #include "sortable.hpp"
 
 class even_odd_sort_open_mp : public sortable {
@@ -17,8 +15,6 @@ public:
 	void sort_array(int array[], int n);
 	
 private:
-	std::mutex cout_mutex;
-	
 	void sort_thread(int array[], int start, int stop);
 	
 	void merge_thread(int array[], int start, int mid, int stop);
