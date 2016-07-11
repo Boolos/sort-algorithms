@@ -1,0 +1,9 @@
+#PBS -N sort-algorithms
+#PBS -q tiny16core
+#PBS -j oe
+#PBS -m abe
+#PBS -M lbg002@uark.edu
+#PBS -o sort-algorithms.$PBS_JOBID
+#PSB -l nodes=1:ppn=16,walltime=2:00:00
+
+/scratch/lbg002/sort-algorithms > $PBS_O_WORKDIR/sort-algorithms.txt
