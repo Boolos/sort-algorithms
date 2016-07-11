@@ -6,4 +6,4 @@
 #PBS -o sort-algorithms.$PBS_JOBID
 #PSB -l nodes=1:ppn=16,walltime=2:00:00
 
-/scratch/lbg002/sort-algorithms -n 64000000 -t 16 -r 10 > $PBS_O_WORKDIR/sort-algorithms.txt
+/scratch/lbg002/sort-algorithms -n 64000000 -t 16 -r 10 > $PBS_O_WORKDIR/sort-algorithms.$PBS_JOBID.txt
