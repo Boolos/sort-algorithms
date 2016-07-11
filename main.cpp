@@ -11,6 +11,7 @@
 #include "bitonic_sort.hpp"
 #include "insertion_sort.hpp"
 #include "shell_sort.hpp"
+#include "shear_sort.hpp"
 
 namespace csce {
 
@@ -26,6 +27,7 @@ namespace csce {
 		sorts.push_back(new bucket_sort(thread_count));
 		sorts.push_back(new bitonic_sort(thread_count));
 		sorts.push_back(new shell_sort(thread_count, new insertion_sort(thread_count)));
+		sorts.push_back(new shear_sort(thread_count));
 	
 		return sorts;
 	}
