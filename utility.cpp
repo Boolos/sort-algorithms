@@ -9,7 +9,8 @@ std::string utility::duration_string(long long int duration){
 void utility::fill_random(int array[], int n){
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	int min = std::numeric_limits<int>::min();
+	//int min = std::numeric_limits<int>::min();
+	int min = 0;
 	int max = std::numeric_limits<int>::max();
 	std::uniform_int_distribution<int> dist(min, max);
 	for(int x=0; x<n; x++){
