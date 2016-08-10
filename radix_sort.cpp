@@ -25,7 +25,7 @@ void radix_sort::sort_array(int array[], int m)
         size_t bucket[BASE] = {0};
  
         size_t local_bucket[BASE] = {0}; 
-		// size needed in each bucket/thread
+		//size needed in each bucket/thread
         //1st pass, scan whole and check the count
 		
         #pragma omp parallel firstprivate(local_bucket)
@@ -63,18 +63,21 @@ void radix_sort::sort_array(int array[], int m)
                 }
  
             }
+			
             #pragma omp for schedule(static)
             for(i = 0; i < n; i++) { 
                 buffer[local_bucket[DIGITS(data[i], shift)]++] = data[i];
             }
         }
-        //now move data
+		
+        //now copy back the sorted data
         unsigned* tmp = data;
         data = buffer;
         buffer = tmp;
 		int* array = (int*) data;
 		
     }
+	
     free(buffer);
 }
 
